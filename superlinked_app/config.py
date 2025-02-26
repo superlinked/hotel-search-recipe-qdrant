@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     )
     openai_model: str = "gpt-4o"
     openai_api_key: SecretStr
-    qdrant_url: str = "https://133c075a-b1e2-4c03-b56c-eb537c39387e.us-east4-0.gcp.cloud.qdrant.io:6333"
-    qdrant_api_key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.tRLY3ClVAWpCU8Ck6frbgXDST3I0zGUtOScejngRGiI"
+    qdrant_url: str = "https://..."
+    qdrant_api_key: str = "..."
     model_config = SettingsConfigDict(
         env_file=DEFAULT_ENV_FILENAME, env_file_encoding="utf-8"
     )

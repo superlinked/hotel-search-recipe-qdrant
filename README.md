@@ -58,6 +58,12 @@ More details are provided below, in the **Tutorial** section.
   <img src="./assets/architecture.svg" alt="System Architecture" width="50%">
 </div>
 
+### Qrant VDB
+Visit [Qdrant Cloud](https://cloud.qdrant.io/) to start working with your own VDB. 
+Local and cloud VDBs are supported.
+
+If you are interested in running the project on our DB, please contact us at.
+
 
 ### Superlinked server
 
@@ -81,7 +87,7 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -d ''
 ```
-
+Please waite until the ingestion is finished. You will see the message.
 ### Streamlit frontend
 
 ```shell
