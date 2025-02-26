@@ -1,0 +1,15 @@
+[project]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Andrey Pikunov", email = "pikunov.andrew@gmail.com" }]
+dependencies = ["streamlit>=1.39.0", "requests>=2.32.3", "dynaconf>=3.2.6"]
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.setuptools]
+packages = ["app"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

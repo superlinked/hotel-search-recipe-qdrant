@@ -1,0 +1,2 @@
+superlinked==19.14.1
+superlinked-server==1.4.0
