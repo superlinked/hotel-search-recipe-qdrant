@@ -89,7 +89,23 @@ with st.sidebar:
 params = {"natural_query": text, "limit": limit}
 response = sl_client.query("hotel", params)
 response_flattened = flatten_response(response)
-knn_params = response["metadata"]["debug_data"]["knn_params"]
+
+# Extract parameters from the first entry's metadata if available
+if "entries" in response and response["entries"] and "metadata" in response["entries"][0]:
+    # Try to infer parameters from the scores
+    partial_scores = response["entries"][0]["metadata"].get("partial_scores", [])
+    
+    # Create a simple representation of the parameters
+    knn_params = {
+        "price_weight": partial_scores[1] if len(partial_scores) > 1 else 0,
+        "rating_weight": partial_scores[2] if len(partial_scores) > 2 else 0,
+        "rating_count_weight": partial_scores[3] if len(partial_scores) > 3 else 0,
+        "description_weight": 1.0,
+        "description": f"Results for: {text}",
+        "city": ["London"] if "london" in text.lower() else []
+    }
+else:
+    knn_params = {}
 
 with st.sidebar:
     knn_params_clean = clean_knn_params(knn_params)

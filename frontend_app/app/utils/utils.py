@@ -18,17 +18,35 @@ def get_kick_start_options() -> list[str]:
 def flatten_response(response: dict) -> list[dict]:
     result = []
 
-    for row in response["results"]:
-        obj = {}
-
-        for k, v in row["obj"].items():
-            obj[k] = v
-
-        row_flattened = {
-            "score": row["entity"]["score"],
-            **obj,
-        }
-        result.append(row_flattened)
+    # Handle new API response structure with "entries" instead of "results"
+    if "entries" in response:
+        for entry in response["entries"]:
+            # Extract fields from the entry
+            fields = entry.get("fields", {})
+            
+            # Create flattened row with score from metadata
+            row_flattened = {
+                "id": entry.get("id", ""),
+                "score": entry.get("metadata", {}).get("score", 0),
+                **fields,
+            }
+            result.append(row_flattened)
+    # Maintain backward compatibility for "results" if that structure returns
+    elif "results" in response:
+        for row in response["results"]:
+            obj = {}
+            for k, v in row.get("obj", {}).items():
+                obj[k] = v
+                
+            row_flattened = {
+                "score": row.get("entity", {}).get("score", 0),
+                **obj,
+            }
+            result.append(row_flattened)
+    # Handle empty or unexpected response
+    else:
+        # Return empty result if neither structure is found
+        pass
 
     return result
 
