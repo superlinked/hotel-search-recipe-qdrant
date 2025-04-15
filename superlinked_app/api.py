@@ -7,7 +7,7 @@ from superlinked_app.config import settings
 rest_source_speech = sl.RestSource(hotel_schema)
 
 vector_database = sl.QdrantVectorDatabase(
-    host=settings.qdrant_url, api_key=settings.qdrant_api_key
+    url=settings.qdrant_url, api_key=settings.qdrant_api_key
 )
 
 config = sl.DataLoaderConfig(
