@@ -3,3 +3,5 @@ superlinked_app/__pycache__
 superlinked_app/.env
 **/.DS_Store
 frontend_app/.venv_frontend
+frontend_app/app.egg-info
+frontend_app/logs
