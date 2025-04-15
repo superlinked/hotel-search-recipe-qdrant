@@ -2,3 +2,4 @@
 superlinked_app/__pycache__
 superlinked_app/.env
 **/.DS_Store
+frontend_app/.venv_frontend

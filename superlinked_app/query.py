@@ -24,7 +24,7 @@ from superlinked_app.nlq import (
 cat_options = get_cat_options()
 
 # query_debug is a simple way to check if server has some data ingested:
-query_debug = sl.Query(index).find(hotel_schema).limit(3)
+query_debug = sl.Query(index).find(hotel_schema).limit(3).select_all()
 
 # Let's define a main query that will be used for multi-modal semantic search:
 query = (
@@ -56,6 +56,12 @@ query = (
 
 # We can specify number of retreved results like this:
 query = query.limit(sl.Param("limit", default=4))
+
+# We want all fields to be returned
+query = query.select_all()
+
+# .. and all the metadata including knn_params and partial_scores
+query = query.include_metadata()
 
 # Now let's add hard-filtering
 # for city:
@@ -202,6 +208,3 @@ query = query.with_natural_query(
     client_config=openai_config,
     system_prompt=system_prompt,
 )
-
-query = query.include_metadata()
-query = query.select_all()

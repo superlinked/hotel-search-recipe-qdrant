@@ -8,7 +8,7 @@ DEFAULT_ENV_FILENAME = ".env"
 
 class Settings(BaseSettings):
     text_embedder_name: str = "sentence-transformers/all-mpnet-base-v2"
-    chunk_size: int = 100
+    chunk_size: int = 1000
     path_categories: str = (
         "https://storage.googleapis.com/superlinked-recipes-data/hotels-search/categories/categories.json"
     )
@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     )
     openai_model: str = "gpt-4o"
     openai_api_key: SecretStr
-    qdrant_url: str = "https://..."
-    qdrant_api_key: str = "..."
+    qdrant_url: str = "https://582c83bf-e97f-401a-9ff7-8480522f5e88.europe-west3-0.gcp.cloud.qdrant.io"
+    qdrant_api_key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.0hEkwzpfBRRQxXnDky4G0Hiuou6yfnWmvATWODEnVnM"
     model_config = SettingsConfigDict(
         env_file=DEFAULT_ENV_FILENAME, env_file_encoding="utf-8"
     )

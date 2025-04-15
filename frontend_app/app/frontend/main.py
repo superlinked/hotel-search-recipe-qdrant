@@ -22,8 +22,57 @@ logger = setup_logging()
 st.set_page_config(
     page_title="Superlinked hotel search demo",
     initial_sidebar_state="expanded",
-    layout="wide",
+    layout="centered",
+    page_icon="app/frontend/favicon.png"
+    
 )
+
+
+# Custom CSS to remove rounded corners
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
+    /* Apply DM Mono to all headings */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'DM Mono', monospace !important;
+    }
+
+    /* Custom styling for the text input and its containers */
+    .stTextInput input {
+        height: 60px !important;
+        font-size: 16px !important;
+        padding: 12px !important;
+    }
+
+    div[data-testid="stTextInputRootElement"] {
+        min-height: 60px !important;
+    }
+
+            
+    /* Styling for number input to match text input */
+    .stNumberInput input {
+        height: 60px !important;
+        font-size: 16px !important;
+        padding: 12px !important;
+    }
+
+    div[data-testid="stNumberInputContainer"] {
+        min-height: 60px !important;
+    }
+
+            
+    /* Custom info box styling */
+    div[data-testid="stAlert"] {
+        background-color: #FFDDD5 !important;
+    }
+    
+    div[data-testid="stAlertContentInfo"] {
+        color: #FE552E !important;
+    }
+             
+</style>
+""", unsafe_allow_html=True)
 
 
 @st.cache_resource
@@ -43,19 +92,27 @@ sl_client, id_to_image_url = load_resources()
 
 st.title("Hotels search")
 
+# Add some space between the filters and the results
+st.text(" ")
+st.text(" ")
 
-st.markdown("**🚀 Kick start your discovery**")
 
 kick_start_options = get_kick_start_options()
 
+
 cols = st.columns(len(kick_start_options))
+
 for option, col in zip(kick_start_options, cols):
     if col.button(option, use_container_width=True):
         st.session_state.text = option
 
-col_query_text, col_limit = st.columns([0.85, 0.15])
+#Space
+st.text(" ")
+
+
+col_query_text, col_limit = st.columns([0.8, 0.2])
 with col_query_text:
-    st.write("🧠 **Natural Language Interface**")
+    st.write("**Natural Language Search**")
     text = st.text_input(
         label="🧠 **Natural Language Interface**",
         value=kick_start_options[0],
@@ -69,43 +126,34 @@ with col_limit:
     limit = st.number_input(
         "**Limit**", min_value=1, value=5, label_visibility="collapsed"
     )
-
-
-st.info(
-    (
-        "Learn more about how Superlinked handles natural language queries in [our github]"
-        "(https://github.com/superlinked/superlinked/blob/main/notebook/feature/natural_language_querying.ipynb)"
-        "!"
-    ),
-    icon="💡",
-)
+    
 
 
 # # - - - Query - - -
 
 with st.sidebar:
+    st.subheader("Description")
+    st.text("Use this tool to search for hotels based on various criteria such as description, price, rating, and more, all through natural language queries.")
+    st.info(
+        (
+            "Read more about this demo [here]"
+            "(https://docs.superlinked.com/recipes/multi-modal-semantic-search/hotel-search)"
+            "!"
+        ),
+        icon="💡",
+    )
+
+    #Add some space
+    st.text(" ")
+    st.text(" ")
+
     st.markdown("### Query params")
+    st.text("This are the query parameters that superlinked created from your natural language query")
 
 params = {"natural_query": text, "limit": limit}
 response = sl_client.query("hotel", params)
 response_flattened = flatten_response(response)
-
-# Extract parameters from the first entry's metadata if available
-if "entries" in response and response["entries"] and "metadata" in response["entries"][0]:
-    # Try to infer parameters from the scores
-    partial_scores = response["entries"][0]["metadata"].get("partial_scores", [])
-    
-    # Create a simple representation of the parameters
-    knn_params = {
-        "price_weight": partial_scores[1] if len(partial_scores) > 1 else 0,
-        "rating_weight": partial_scores[2] if len(partial_scores) > 2 else 0,
-        "rating_count_weight": partial_scores[3] if len(partial_scores) > 3 else 0,
-        "description_weight": 1.0,
-        "description": f"Results for: {text}",
-        "city": ["London"] if "london" in text.lower() else []
-    }
-else:
-    knn_params = {}
+knn_params = response["metadata"]["search_params"]
 
 with st.sidebar:
     knn_params_clean = clean_knn_params(knn_params)
@@ -141,16 +189,19 @@ if filters_formatted:
 else:
     st.markdown("##### No filters applied")
 
+# Add some space between the filters and the results
+st.text(" ")
+st.text(" ")
 
 if len(response_flattened) > 0:
 
     for item in response_flattened:
         with st.container(border=True):
 
-            col_main, col_amenities = st.columns([0.5, 0.5])
+            col_main, col_amenities = st.columns([0.6, 0.4])
 
             with col_main:
-                col_image, col_text = st.columns([0.25, 0.75])
+                col_image, col_text = st.columns([0.4, 0.6])
                 with col_image:
                     url = id_to_image_url[item["id"]]
                     try:

@@ -18,35 +18,14 @@ def get_kick_start_options() -> list[str]:
 def flatten_response(response: dict) -> list[dict]:
     result = []
 
-    # Handle new API response structure with "entries" instead of "results"
-    if "entries" in response:
-        for entry in response["entries"]:
-            # Extract fields from the entry
-            fields = entry.get("fields", {})
-            
-            # Create flattened row with score from metadata
-            row_flattened = {
-                "id": entry.get("id", ""),
-                "score": entry.get("metadata", {}).get("score", 0),
-                **fields,
-            }
-            result.append(row_flattened)
-    # Maintain backward compatibility for "results" if that structure returns
-    elif "results" in response:
-        for row in response["results"]:
-            obj = {}
-            for k, v in row.get("obj", {}).items():
-                obj[k] = v
-                
-            row_flattened = {
-                "score": row.get("entity", {}).get("score", 0),
-                **obj,
-            }
-            result.append(row_flattened)
-    # Handle empty or unexpected response
-    else:
-        # Return empty result if neither structure is found
-        pass
+    for entry in response["entries"]:
+
+        item = {
+            "id": entry["id"],
+            "score": entry["metadata"]["score"],
+            **entry["fields"],
+        }
+        result.append(item)
 
     return result
 
@@ -58,7 +37,8 @@ def clean_knn_params(knn_params: dict) -> dict:
         "limit",
         "radius",
         "natural_query",
-        "system_prompt_param",
+        "system_prompt_param__",
+        "select_param__",
     ]
     for key in keys_remove:
         knn_params_clean.pop(key, None)
