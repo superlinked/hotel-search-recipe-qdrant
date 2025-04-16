@@ -66,11 +66,19 @@ def format_filters(params) -> str:
             if options is None:
                 continue
 
-            for option in options:
+            # Special handling for accommodation types - when options is a string (not a list)
+            if column == "accomodation_types" and isinstance(options, str):
                 if "include" in suffix:
-                    options_highlighted.append(f":blue-background[{option}]")
+                    options_highlighted.append(f":blue-background[{options}]")
                 else:
-                    options_highlighted.append(f"~~:red-background[{option}]~~")
+                    options_highlighted.append(f"~~:red-background[{options}]~~")
+            # Normal handling for other cases
+            else:
+                for option in options:
+                    if "include" in suffix:
+                        options_highlighted.append(f":blue-background[{option}]")
+                    else:
+                        options_highlighted.append(f"~~:red-background[{option}]~~")
 
         if not options_highlighted:
             continue
