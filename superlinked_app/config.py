@@ -8,7 +8,7 @@ DEFAULT_ENV_FILENAME = ".env"
 
 class Settings(BaseSettings):
     text_embedder_name: str = "sentence-transformers/all-mpnet-base-v2"
-    chunk_size: int = 1000
+    chunk_size: int = 10
     path_categories: str = (
         "https://storage.googleapis.com/superlinked-recipes-data/hotels-search/categories/categories.json"
     )
