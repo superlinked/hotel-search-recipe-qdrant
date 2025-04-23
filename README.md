@@ -88,17 +88,15 @@ curl -X 'POST' \
   -d ''
 ```
 Please waite until the ingestion is finished. You will see the message.
-### Streamlit frontend
+### Build the HTML Frontend
 
 ```shell
-cd frontend_app
-python3.11 -m venv .venv-frontend
-. .venv-frontend/bin/activate
+cd html_frontend
 pip install -e .
-python -m streamlit run app/frontend/main.py
+uvicorn main:app --reload --port 8000
 ```
 
-The Streamlit UI will be available at [localhost:8501](http://localhost:8501).
+The Frontend UI will be available at [localhost:8000](http://localhost:8000).
 
 ### Jupyter notebook
 
