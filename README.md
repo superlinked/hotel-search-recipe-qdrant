@@ -134,6 +134,10 @@ It's needed just to make a python package, you can keep it empty.
 Settings of our application are read from `.env` file.
 You can create one simply by copying [`.env-example`](./superlinked_app/.env-example) and setting `openai_api_key` which is needed for NLQ.
 
+The embedder model used in this example is `sentence-transformers/all-mpnet-base-v2` which balances speed and accuracy, if you want a more accurate model,
+you can use `Alibaba-NLP/gte-large-en-v1.5` (used in our hosted demo) however be mindful that this will slow things down!
+
+
 ---
 
 [**`index.py`**](./superlinked_app/index.py)
