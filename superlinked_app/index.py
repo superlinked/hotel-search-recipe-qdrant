@@ -25,6 +25,7 @@ class Hotel:
     for_children: sl.StringList
     city: sl.String
     country: sl.String
+    image_src: sl.String
 
 
 hotel_schema = Hotel()
